@@ -1,0 +1,26 @@
+﻿<!-- File: Pages/FetchData.razor -->
+@page "/fetchdata"
+@inject HttpClient Http
+
+<h1>Alerts</h1>
+
+@if (alerts == null)
+{
+        <p><em>Loading...</em></p>
+}
+else
+{
+    foreach (var alert in alerts)
+    {
+                <p>Alert: @alert.Type - @alert.Description (@alert.Time.ToLocalTime())</p>
+    }
+}
+
+@code {
+    private Alert[] alerts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        alerts = await Http.GetFromJsonAsync<Alert[]>("alerts");
+    }
+}
